@@ -6,6 +6,7 @@ Super Payment API is a Golang-based REST API for managing invoices and payments 
 
 - Create new invoices with calculated amounts.
 - Retrieve a list of invoices within a specified date range.
+- Authentication (TO BE DONE)
 
 ## Getting Started
 
@@ -46,66 +47,67 @@ Response:
 
 
 ### Run application
-    go run main.go
+    go run main.go models.go auth.go
 
 ## API Endpoints
 
 ### Create Invoice
 Endpoint: POST /api/invoices
 
-Request Body:
+Example Curl Request:
 ```
-{
-  "paymentAmount": 1000.00,
-  "dueDate": "2024-03-01",
-  "status": "未処理",
-  "company": {
-    "legalName": "Example Company",
-    "representativeName": "John Doe",
-    "phoneNumber": "123-456-7890",
-    "postalCode": "12345",
-    "address": "123 Main St"
-  },
-  "user": {
-    "userID": "user123",
-    "name": "Alice",
-    "email": "alice@example.com",
-    "password": "securepassword"
-  },
-  "client": {
-    "legalName": "Client Corp",
-    "representativeName": "Jane Smith",
-    "phoneNumber": "987-654-3210",
-    "postalCode": "54321",
-    "address": "456 Second St"
-  },
-  "clientBankAccount": {
-    "bankName": "Example Bank",
-    "branchName": "Main Branch",
-    "accountNumber": "12345678",
-    "accountName": "Client Account"
-  }
-}
+curl --location 'http://localhost:8080/api/v1/invoices' \
+--header 'Authorization: Bearer your_token_here' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "paymentAmount": 15000,
+    "dueDate": "2024-03-15",
+    "company": {
+      "legalName": "Example Company",
+      "representativeName": "John Doe",
+      "phoneNumber": "123-456-7890",
+      "postalCode": "12345",
+      "address": "123 Main St"
+    },
+    "user": {
+      "name": "Alice",
+      "email": "alice@example.com",
+      "password": "securepassword"
+    },
+    "client": {
+      "legalName": "Client Corp",
+      "representativeName": "Jane Smith",
+      "phoneNumber": "987-654-3210",
+      "postalCode": "54321",
+      "address": "456 Park Ave"
+    },
+    "clientBankAccount": {
+      "bankName": "Bank XYZ",
+      "branchName": "Main Branch",
+      "accountNumber": "987654321",
+      "accountName": "Client Corp Account"
+    }
+}'
 ```
 
 Response:
 ```
 {
-  "ID": 1,
-  "CreatedAt": "2024-02-24T12:00:00Z",
-  "UpdatedAt": "2024-02-24T12:00:00Z",
-  "DeletedAt": null,
-  "issueDate": "2024-02-24T12:00:00Z",
-  "paymentAmount": 1000,
-  "fee": 40,
-  "feeRate": 0.04,
-  "tax": 44,
-  "taxRate": 0.1,
-  "totalAmount": 1084,
-  "dueDate": "2024-03-01T00:00:00Z",
-  "status": "未処理",
-  "companyID": 1,
-  "clientID": 1
+    "ID": 1,
+    "CreatedAt": "2024-02-25T22:06:12.074367+08:00",
+    "UpdatedAt": "2024-02-25T22:06:12.074367+08:00",
+    "DeletedAt": null,
+    "issueDate": "2024-02-25T22:06:12.074281+08:00",
+    "paymentAmount": 15000,
+    "fee": 600,
+    "feeRate": 0.04,
+    "tax": 60,
+    "taxRate": 0.1,
+    "totalAmount": 17160,
+    "dueDate": "2024-03-15T00:00:00Z",
+    "status": "",
+    "CompanyID": 0,
+    "ClientID": 0
 }
 ```
 
@@ -117,8 +119,8 @@ Query Parameters:
 - startDate (string, required): Start date for filtering invoices.
 - endDate (string, required): End date for filtering invoices.
 
-Example:
-    ```GET /api/invoices?startDate=2024-02-01&endDate=2024-02-28```
+Example Curl Request:
+    ```curl --location 'localhost:8080/api/v1/invoices?startDate=2021-01-04&endDateStr=2023-01-04' --header 'Authorization: test'```
 
 Response:
 ```
