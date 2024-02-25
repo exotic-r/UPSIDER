@@ -1,1 +1,150 @@
 # UPSIDER
+
+Super Payment API is a Golang-based REST API for managing invoices and payments in a fictional web service called "Super Payment". It utilizes the Gin framework for routing and Gorm as the ORM for database operations.
+
+## Features
+
+- Create new invoices with calculated amounts.
+- Retrieve a list of invoices within a specified date range.
+
+## Getting Started
+
+### Prerequisites
+
+- Golang installed on your machine.
+- [Gin](https://github.com/gin-gonic/gin) web framework.
+- [Gorm](https://gorm.io/) ORM library.
+- SQLite (for in-memory database).
+
+### Installation
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/yourusername/super-payment-api.git
+   cd super-payment-api
+   ```
+
+2. Install dependencies:
+   
+   ```bash 
+   go mod download
+    ```
+
+Get Invoices
+Endpoint: GET /api/invoices
+
+Query Parameters:
+
+startDate (string, required): Start date for filtering invoices.
+endDate (string, required): End date for filtering invoices.
+Example:
+
+GET /api/invoices?startDate=2024-02-01&endDate=2024-02-28
+
+Response:
+
+
+### Run application
+    go run main.go
+
+## API Endpoints
+
+### Create Invoice
+Endpoint: POST /api/invoices
+
+Request Body:
+```
+{
+  "paymentAmount": 1000.00,
+  "dueDate": "2024-03-01",
+  "status": "未処理",
+  "company": {
+    "legalName": "Example Company",
+    "representativeName": "John Doe",
+    "phoneNumber": "123-456-7890",
+    "postalCode": "12345",
+    "address": "123 Main St"
+  },
+  "user": {
+    "userID": "user123",
+    "name": "Alice",
+    "email": "alice@example.com",
+    "password": "securepassword"
+  },
+  "client": {
+    "legalName": "Client Corp",
+    "representativeName": "Jane Smith",
+    "phoneNumber": "987-654-3210",
+    "postalCode": "54321",
+    "address": "456 Second St"
+  },
+  "clientBankAccount": {
+    "bankName": "Example Bank",
+    "branchName": "Main Branch",
+    "accountNumber": "12345678",
+    "accountName": "Client Account"
+  }
+}
+```
+
+Response:
+```
+{
+  "ID": 1,
+  "CreatedAt": "2024-02-24T12:00:00Z",
+  "UpdatedAt": "2024-02-24T12:00:00Z",
+  "DeletedAt": null,
+  "issueDate": "2024-02-24T12:00:00Z",
+  "paymentAmount": 1000,
+  "fee": 40,
+  "feeRate": 0.04,
+  "tax": 44,
+  "taxRate": 0.1,
+  "totalAmount": 1084,
+  "dueDate": "2024-03-01T00:00:00Z",
+  "status": "未処理",
+  "companyID": 1,
+  "clientID": 1
+}
+```
+
+
+### Get Invoices
+Endpoint: GET /api/invoices
+
+Query Parameters:
+- startDate (string, required): Start date for filtering invoices.
+- endDate (string, required): End date for filtering invoices.
+
+Example:
+    ```GET /api/invoices?startDate=2024-02-01&endDate=2024-02-28```
+
+Response:
+```
+[
+  {
+    "ID": 1,
+    "CreatedAt": "2024-02-24T12:00:00Z",
+    "UpdatedAt": "2024-02-24T12:00:00Z",
+    "DeletedAt": null,
+    "issueDate": "2024-02-24T12:00:00Z",
+    "paymentAmount": 1000,
+    "fee": 40,
+    "feeRate": 0.04,
+    "tax": 44,
+    "taxRate": 0.1,
+    "totalAmount": 1084,
+    "dueDate": "2024-03-01T00:00:00Z",
+    "status": "未処理",
+    "companyID": 1,
+    "clientID": 1
+  }
+]
+```
+
+## Testing
+    go test
+
+## Contributing
+Contributions are welcome! If you find any issues or have suggestions for improvement, please open an issue or create a pull request.
