@@ -47,7 +47,7 @@ Response:
 
 
 ### Run application
-    go run main.go models.go auth.go
+    go run main.go models.go auth.go handlers.go
 
 ## API Endpoints
 
@@ -147,6 +147,15 @@ Response:
 
 ## Testing
     go test
+
+
+## TODO
+### Finish Authentication Implementation:
+- Complete the implementation of authentication, ensuring that user identity is properly verified. Consider using a secure authentication method (e.g., JWT, OAuth).
+Authorization Middleware: Implement middleware for authorization to control access to different API endpoints based on user roles and permissions.
+
+### Database Management:
+- Replace In-Memory SQLite with Persistent Database: Transition from the in-memory SQLite database to a persistent database (e.g., PostgreSQL, MySQL). This ensures data persistence across application restarts.
 
 ## Contributing
 Contributions are welcome! If you find any issues or have suggestions for improvement, please open an issue or create a pull request.
