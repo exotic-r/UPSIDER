@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"time"
 
@@ -58,7 +59,12 @@ func createInvoiceHandler(c *gin.Context) {
 		ClientID:      int(requestBody.Client.ID),
 	}
 
-	db.Create(&invoice)
+	if err := db.Create(&invoice).Error; err != nil {
+		log.Printf("Error creating invoice: %v", err)
+
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal Server Error"})
+		return
+	}
 	c.JSON(http.StatusOK, invoice)
 }
 
@@ -77,7 +83,12 @@ func getInvoicesHandler(c *gin.Context) {
 	}
 
 	var filteredInvoices []Invoice
-	query.Find(&filteredInvoices)
+	if err := query.Find(&filteredInvoices).Error; err != nil {
+		log.Printf("Error retrieving invoices: %v", err)
+
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal Server Error"})
+		return
+	}
 	c.JSON(http.StatusOK, filteredInvoices)
 }
 
